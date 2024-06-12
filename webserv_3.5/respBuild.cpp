@@ -325,6 +325,22 @@ int    Response::DELETE(const std::string& path)
     return 0;
 }
 
+int root_access(std::string &path)
+{
+    std::vector<std::string> rt = split_uri(path);
+
+    std::string root;
+
+    for (size_t i = 1; i < rt.size(); ++i)
+    {
+        root += "/" + rt[i];
+        if (access(root.c_str(), R_OK) != 0) 
+            return 1;
+
+    }
+    return 0;
+}
+
 std::string Response::getHdResp()
 {
     struct stat statbuf;
